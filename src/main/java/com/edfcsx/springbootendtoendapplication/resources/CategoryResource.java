@@ -1,8 +1,11 @@
 package com.edfcsx.springbootendtoendapplication.resources;
 
 import com.edfcsx.springbootendtoendapplication.domain.Category;
+import com.edfcsx.springbootendtoendapplication.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,17 +16,21 @@ import java.util.List;
 @RequestMapping(value = "/categories")
 public class CategoryResource {
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping
     public ResponseEntity<List<Category>> findALl() {
+        List<Category> obj = categoryService.findAll();
 
-        Category cat = new Category(1, "Informática");
-        Category cat1 = new Category(2, "Escritório");
+        return ResponseEntity.ok().body(obj);
+    }
 
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(cat);
-        categoryList.add(cat1);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Category> findById(@PathVariable Integer id) {
+        Category obj = categoryService.findById(id);
 
-        return ResponseEntity.ok().body(categoryList);
+        return ResponseEntity.ok().body(obj);
     }
 
 }
