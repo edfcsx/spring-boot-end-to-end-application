@@ -2,6 +2,7 @@ package com.edfcsx.springbootendtoendapplication.services;
 
 import com.edfcsx.springbootendtoendapplication.domain.Category;
 import com.edfcsx.springbootendtoendapplication.repositories.CategoryRepository;
+import com.edfcsx.springbootendtoendapplication.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,13 @@ public class CategoryService {
     public List<Category> findAll() {
         Optional<List<Category>> obj = Optional.of(categoryRepository.findAll());
 
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(null));
     }
 
     public Category findById(Integer id) {
         Optional<Category> obj = categoryRepository.findById(id);
 
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
 }
