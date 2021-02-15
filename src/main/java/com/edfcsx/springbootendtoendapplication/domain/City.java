@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_city")
+@Table(name = "tb_cities")
 public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;

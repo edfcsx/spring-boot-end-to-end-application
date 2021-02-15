@@ -1,13 +1,8 @@
 package com.edfcsx.springbootendtoendapplication.config;
 
-import com.edfcsx.springbootendtoendapplication.domain.Category;
-import com.edfcsx.springbootendtoendapplication.domain.City;
-import com.edfcsx.springbootendtoendapplication.domain.Product;
-import com.edfcsx.springbootendtoendapplication.domain.State;
-import com.edfcsx.springbootendtoendapplication.repositories.CategoryRepository;
-import com.edfcsx.springbootendtoendapplication.repositories.CityRepository;
-import com.edfcsx.springbootendtoendapplication.repositories.ProductRepository;
-import com.edfcsx.springbootendtoendapplication.repositories.StateRepository;
+import com.edfcsx.springbootendtoendapplication.domain.*;
+import com.edfcsx.springbootendtoendapplication.domain.enums.CustomerType;
+import com.edfcsx.springbootendtoendapplication.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +25,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     CityRepository cityRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,5 +65,42 @@ public class TestConfig implements CommandLineRunner {
         c3.setState(s2);
 
         cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+        Customer cli1 = new Customer(
+                null,
+                "Maria Silva",
+                "maria@any_mail.com",
+                "9876545688",
+                CustomerType.NATURAL_PERSON
+        );
+
+        cli1.getPhones().addAll(Arrays.asList("81998030890"));
+
+        Address address1 = new Address(
+                null,
+                "Rua Flores",
+                "18",
+                "casa",
+                "Jardins",
+                "51350320",
+                cli1,
+                c2
+        );
+
+        Address address2 = new Address(
+                null,
+                "Avenida Matos",
+                "300",
+                "APT 01",
+                "Ipsep",
+                "51350320",
+                cli1,
+                c2
+        );
+
+        cli1.getAddresses().addAll(Arrays.asList(address1, address2));
+
+        customerRepository.saveAll(Arrays.asList(cli1));
+        addressRepository.saveAll(Arrays.asList(address1, address2));
     }
 }
