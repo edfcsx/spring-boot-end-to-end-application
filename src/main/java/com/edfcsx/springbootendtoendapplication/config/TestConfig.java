@@ -2,12 +2,15 @@ package com.edfcsx.springbootendtoendapplication.config;
 
 import com.edfcsx.springbootendtoendapplication.domain.*;
 import com.edfcsx.springbootendtoendapplication.domain.enums.CustomerType;
+import com.edfcsx.springbootendtoendapplication.domain.enums.PaymentStatus;
 import com.edfcsx.springbootendtoendapplication.repositories.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @Configuration
@@ -31,6 +34,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     AddressRepository addressRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    PaymentRepository paymentRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -102,5 +111,40 @@ public class TestConfig implements CommandLineRunner {
 
         customerRepository.saveAll(Arrays.asList(cli1));
         addressRepository.saveAll(Arrays.asList(address1, address2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYY HH:mm");
+
+        Order order = new Order(
+                null,
+                sdf.parse("30/09/2017 10:32"),
+                cli1,
+                address1
+        );
+
+        Order order1 = new Order(
+                null,
+                sdf.parse("10/10/2017 19:35"),
+                cli1,
+                address2
+        );
+
+        Payment pay = new PaymentWithCard(null, PaymentStatus.PAID.getCod(), order, 6);
+
+        order.setPayment(pay);
+
+        Payment pay1 = new PaymentWithSlip(
+                null,
+                PaymentStatus.PENDING.getCod(),
+                order1,
+                sdf.parse("20/10/2017 00:00"),
+                null
+        );
+
+        order1.setPayment(pay1);
+
+        cli1.getOrders().addAll(Arrays.asList(order, order1));
+
+        orderRepository.saveAll(Arrays.asList(order, order1));
+        paymentRepository.saveAll(Arrays.asList(pay, pay1));
     }
 }
