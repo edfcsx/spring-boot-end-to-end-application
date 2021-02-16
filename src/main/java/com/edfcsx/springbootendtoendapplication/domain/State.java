@@ -1,5 +1,7 @@
 package com.edfcsx.springbootendtoendapplication.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class State implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "state")
+    @JsonIgnore
     private List<City> cities = new ArrayList<>();
 
     public State() {}
