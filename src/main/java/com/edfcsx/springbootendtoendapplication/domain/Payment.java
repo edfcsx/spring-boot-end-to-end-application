@@ -1,6 +1,7 @@
 package com.edfcsx.springbootendtoendapplication.domain;
 
 import com.edfcsx.springbootendtoendapplication.domain.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public abstract class Payment implements Serializable {
     @OneToOne
     @JoinColumn(name = "order_id")
     @MapsId
+    @JsonIgnore
     private Order order;
 
     public Payment() {}
