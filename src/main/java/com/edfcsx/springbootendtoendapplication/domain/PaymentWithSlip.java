@@ -1,9 +1,11 @@
 package com.edfcsx.springbootendtoendapplication.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table(name = "tb_payments_slip")
 public class PaymentWithSlip extends Payment {
 
     private static final long serialVersionUID = 1L;

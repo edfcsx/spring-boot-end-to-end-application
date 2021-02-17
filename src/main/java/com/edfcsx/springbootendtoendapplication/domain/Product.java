@@ -1,10 +1,10 @@
 package com.edfcsx.springbootendtoendapplication.domain;
 
+import org.aspectj.weaver.ast.Or;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_products")
@@ -26,12 +26,25 @@ public class Product implements Serializable {
     )
     private List<Category> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> itens = new HashSet<>();
+
     public Product() {}
 
     public Product(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public List<Order> getOrders() {
+        List<Order> list = new ArrayList<>();
+
+        for (OrderItem orderitem : this.itens) {
+            list.add(orderitem.getOrder());
+        }
+
+        return list;
     }
 
     public Integer getId() {
@@ -60,6 +73,14 @@ public class Product implements Serializable {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public Set<OrderItem> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<OrderItem> itens) {
+        this.itens = itens;
     }
 
     @Override

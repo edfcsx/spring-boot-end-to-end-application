@@ -41,6 +41,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     PaymentRepository paymentRepository;
 
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
     @Override
     public void run(String... args) throws Exception {
         Category cat = new Category(null, "Informática");
@@ -146,5 +149,12 @@ public class TestConfig implements CommandLineRunner {
 
         orderRepository.saveAll(Arrays.asList(order, order1));
         paymentRepository.saveAll(Arrays.asList(pay, pay1));
+
+        OrderItem o1 = new OrderItem(order, p1, 0.00, 1, 2000.0);
+        OrderItem o2 = new OrderItem(order, p3, 0.00, 2, 80.00);
+        OrderItem o3 = new OrderItem(order1, p2, 100.00, 1, 800.00);
+        
+        orderItemRepository.saveAll(Arrays.asList(o1, o2, o3));
+
     }
 }

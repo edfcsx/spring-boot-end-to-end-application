@@ -1,8 +1,10 @@
 package com.edfcsx.springbootendtoendapplication.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_payments_credit_card")
 public class PaymentWithCard extends Payment {
 
     private static final long serialVersionUID = 1L;
